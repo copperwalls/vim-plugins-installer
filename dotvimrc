@@ -1,0 +1,134 @@
+if &compatible
+  set nocompatible
+endif
+
+set showcmd
+
+" Pathogen
+call pathogen#infect()
+
+" I like colors
+filetype on
+filetype plugin on
+set grepprg=grep\ -nH\ $*
+syntax on
+
+" Use UTF-8. Who doesn’t?
+set enc=utf-8
+set fenc=utf-8
+
+" Leave two lines above and below when scrolling
+set scrolloff=2
+
+" Highlight current line
+set cul
+hi CursorLine term=none cterm=none ctermbg=3
+
+" Of course, I also like autoindent
+set autoindent
+
+" Yep, spaces are better than tabs
+set expandtab
+set smarttab
+
+" Four is standard
+set shiftwidth=4
+set softtabstop=4
+
+" Let’s see the line numbers? Uncomment if you want
+"set number
+
+" Ignore case when searching; but ...
+set ignorecase
+
+" Let’s have a choice to search without ignoring case
+set smartcase
+
+" Incremental search
+set incsearch
+
+" Highlight found
+set hlsearch
+
+" No need to reach for the ESC key; type jj instead
+inoremap jj <Esc>
+
+nnoremap JJJJ <Nop>
+
+" When I close the tab, remove the buffer
+set nohidden
+
+" Status line gnarliness
+set laststatus=2
+set statusline=%F%m%r%h%w\ (%{&ff}){%Y}\ [%l,%v][%p%%]}
+
+" Edit vimrc \ev
+nnoremap <silent> <Leader>ev :tabnew<CR>:e ~/.vimrc<CR>
+
+" Center on the line next where search found
+map N Nzz
+map n nzz
+
+" Comment out line with function key F7; uncomment them with F8
+"map <silent> <F7> I#<Esc><Esc>
+"map <silent> <F8> x<Esc><Esc>
+
+" Or, use ToggleComment instead ;)
+map ,# :call CommentLineToEnd('#')<CR>+
+map ,* :call CommentLinePincer('/* ', ' */')<CR>+
+
+" For CommandT
+noremap <leader>o <Esc>:CommandT<CR>
+noremap <leader>O <Esc>:CommandTFlush<CR>
+noremap <leader>m <Esc>:CommandTBuffer<CR>
+
+autocmd FileType html,htmldjango,jinjahtml,eruby,mako let b:closetag_html_style=1
+autocmd FileType html,xhtml,xml,htmldjango,jinjahtml,eruby,mako source ~/.vim/bundle/closetag/plugin/closetag.vim
+
+" I love some coffee :)
+autocmd BufNewFile,BufReadPost *.coffee set filetype=coffee
+autocmd BufNewFile,BufReadPost *.coffee setl shiftwidth=2 expandtab
+
+let g:tagbar_usearrows = 1
+nnoremap <leader>l: TagbarToggle<CR>
+
+" I’m solarized
+set background=dark
+let g:solarized_termtrans=1
+let g:solarized_termcolors=256
+let g:solarized_contrast="high"
+let g:solarized_visibility="high"
+colorscheme solarized
+
+" Remove any trailing whitespace that is in the file
+autocmd BufRead,BufWrite * if ! &bin | silent! %s/\s\+$//ge | endif
+
+" Autocomplete; add more for fun
+iab ecmd ⌘
+
+" Toggle paste mode
+let paste_mode = 0 " 0 = normal, 1 = paste
+func! Toggle_paste_mode()
+   if g:paste_mode == 0
+      set paste
+      let g:paste_mode = 1
+   else
+      set nopaste
+      let g:paste_mode = 0
+   endif
+   return
+endfunc
+
+nnoremap <silent> <F6> :call Toggle_paste_mode()<CR>
+set pastetoggle=<F6>
+
+" Let Syntastic mark errors when writing a file
+let g:syntastic_enable_signs=1
+let g:syntastic_auto_loc_list=1
+
+" 256 colors!
+let &t_Co=256
+
+" Happy hacking!
+" copperwalls was here ;)
+
